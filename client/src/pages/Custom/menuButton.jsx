@@ -1,40 +1,37 @@
 import React, { useState } from 'react';
 import { Button } from 'antd';
 
+{/* Кнопка для меню */}
 const MenuButton = ({
-  icon: IconComponent, // Переименуем проп icon в IconComponent
-  text = 'Text', // Текст кнопки (по умолчанию "Text")
-  textSize = '17px', // Размер текста (по умолчанию 16px)
-  defaultColor = 'grey', // Цвет текста по умолчанию
-  hoverColor = 'black', // Цвет текста при наведении
-  defaultBgColor = 'transparent', // Цвет фона по умолчанию
+  icon: IconComponent, 
+  text = 'Text', 
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const buttonStyle = {
-    color: isHovered ? hoverColor : defaultColor, // Цвет текста
-    border: 'none', // Убираем обводку
-    backgroundColor: isHovered ? 'transparent' : defaultBgColor, // Прозрачный фон при наведении
-    padding: '5px', // Отступы
-    boxShadow: 'none', // Убираем тень
-    width: 250, // Ширина кнопки
-    height: 50, // Высота кнопки
-    fontSize: textSize, // Размер текста
+    color: isHovered ? 'black' : 'grey', 
+    border: 'none', 
+    backgroundColor: isHovered ? 'transparent' : 'transparent', 
+    padding: '5px',
+    boxShadow: 'none', 
+    width: 250, 
+    height: 50, 
+    fontSize: '15px',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-start', // Прижимаем содержимое к левому краю
-    transform: isHovered ? 'translateX(5px)' : 'translateX(0)', // Сдвиг вправо при наведении
-    transition: 'transform 0.2s ease, background-image 0.2s ease', // Плавный переход
+    justifyContent: 'flex-start', 
+    transform: isHovered ? 'translateX(5px)' : 'translateX(0)', 
+    transition: 'transform 0.2s ease, background-image 0.2s ease', 
     backgroundImage: isHovered
-      ? 'linear-gradient(to right, #f7f9ff, white)' // Градиент при наведении
-      : 'none', // Без градиента, если нет наведения
+      ? 'linear-gradient(to right, #f7f9ff, white)' 
+      : 'none',
   };
 
   const iconContainerStyle = {
-    backgroundColor: 'white', // Белый фон для иконки
-    borderRadius: '10px', // Закругленные углы
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', // Тень
-    padding: '8px', // Отступы внутри контейнера
+    backgroundColor: 'white', 
+    borderRadius: '10px', 
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    padding: '8px', 
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -48,7 +45,7 @@ const MenuButton = ({
     >
       {IconComponent && (
         <div style={iconContainerStyle}>
-          <IconComponent /> {/* Рендерим иконку как компонент */}
+          <IconComponent /> 
         </div>
       )}
       <div style={{ marginLeft: IconComponent ? '12px' : '0' }}>{text}</div>
