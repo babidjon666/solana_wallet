@@ -6,6 +6,8 @@ from solana.rpc.api import Client
 import base58
 from solders.keypair import Keypair
 
+from solders.pubkey import Pubkey as PublicKey
+
 client = Client("https://api.mainnet-beta.solana.com")
 
 def generate_wallet():
@@ -19,8 +21,17 @@ def generate_wallet():
     }
 
 def create_and_save_wallet(db: Session = Depends(get_db)):
-    """Создает кошелек и сохраняет его в базе данных"""
     wallet_data = generate_wallet()
     public_key = wallet_data['public_key']
     private_key = wallet_data['private_key']
+
     return create_user(db=db, wallet=public_key, mnemonic=None, private_key=private_key)
+
+def get_sol_balance(wallet_address: str):
+    try:
+        balance = client.get_balance(PublicKey.from_string(wallet_address))
+        
+        return balance.value / 1_000_000_000  
+    
+    except Exception as e:
+        return {"error": str(e)}

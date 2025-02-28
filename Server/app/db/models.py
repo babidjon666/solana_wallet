@@ -10,3 +10,4 @@ class User(Base):
     wallet = Column(String, index=True)
     mnemonic = Column(String)
     private_key = Column(String)
+    password = Column(String)

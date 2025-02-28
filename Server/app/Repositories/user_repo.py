@@ -1,4 +1,4 @@
-from Server.app.db.session import SessionLocal 
+from http.client import HTTPException
 from Server.app.db.models import User
 from sqlalchemy.orm import Session
 
@@ -11,3 +11,4 @@ def create_user(db: Session, wallet: str, mnemonic: str, private_key: str):
     db.commit()
     db.refresh(db_user)
     return db_user
+
