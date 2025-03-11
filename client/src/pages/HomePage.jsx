@@ -42,8 +42,7 @@ const HomePage = () => {
       alignItems="center"
       minHeight="100vh"
       sx={{
-        backgroundColor: '#1A1A1A',
-        backgroundImage: 'linear-gradient(145deg, #2E2E2E, #1A1A1A)',
+        backgroundImage: 'linear-gradient(to right, #e4e9f7, #72dfed)'
       }}
     >
       {!walletCreated ? (
@@ -52,20 +51,20 @@ const HomePage = () => {
             maxWidth: 400,
             borderRadius: 4,
             boxShadow: 3,
-            backgroundColor: '#2E2E2E',
+            backgroundImage: 'linear-gradient(to right, #A763F1, #72dfed)',
             color: '#FFFFFF',
           }}
         >
           <CardContent sx={{ textAlign: 'center', padding: 4 }}>
             <img
-              src="https://cdn-icons-png.flaticon.com/512/6001/6001527.png"
+              src="https://res.coinpaper.com/coinpaper/f_webp,c_limit,w_3840,q_auto:good/solana_sol_logo_28f7fb0af5.svg"
               alt="Logo"
               style={{ width: '100px', marginBottom: '20px' }}
             />
             <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 2, color: 'white' }}>
               Welcome
             </Typography>
-            <Typography variant="body2" sx={{ mb: 4, color: '#CCCCCC' }}>
+            <Typography variant="body2" sx={{ mb: 4, color: 'white' }}>
               Securely manage your wallet and private keys.
             </Typography>
 
