@@ -19,6 +19,8 @@ const LeftMenu = ({ selectedButton, setSelectedButton }) => {
         marginRight: '20px',
         padding: '20px',
         height: '750px',
+        minWidth: '300px',
+        maxWidth: '300px'
       }}
     >
       <BalanceCard />

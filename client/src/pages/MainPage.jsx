@@ -3,11 +3,12 @@ import { Layout } from 'antd';
 import LeftMenu from './Components/LeftMenu';
 import Portfolio from './Portfolio';
 import TradeBanner from './Components/TradeBanner';
+import Swap from './Swap';
 
 const { Content } = Layout;
 
 const MainPage = () => {
-  const [selectedButton, setSelectedButton] = useState("Portfolio"); // Изначально выбрана кнопка "Portfolio"
+  const [selectedButton, setSelectedButton] = useState("Portfolio"); 
 
   return (
     <Layout style={{ minHeight: '100vh', backgroundColor: 'white', padding: 24 }}>
@@ -23,10 +24,15 @@ const MainPage = () => {
         }}
       >
         <LeftMenu selectedButton={selectedButton} setSelectedButton={setSelectedButton} />
-        <div>
-          <TradeBanner />
-          <Portfolio />
-        </div>
+        {selectedButton === "Portfolio" && (
+          <div>
+            <TradeBanner />
+            <Portfolio />
+          </div>
+        )}
+        {selectedButton === "Swap" && (
+          <Swap />
+        )}
       </Content>
     </Layout>
   );
