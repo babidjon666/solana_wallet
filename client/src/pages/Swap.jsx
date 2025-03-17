@@ -1,26 +1,44 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Layout, Image, message, Divider, Select, Input, Button } from 'antd';
-import { getTopVolumeCoins } from '../services/coinGeckoApi';
+import { Layout, Image, Select, Input, Button } from 'antd';
+import { getTopVolumeCoins, getCoinDetails, getHistoricalData } from '../services/coinGeckoApi';
+import { GetPriceRange, GetMeanPriceIn90Days } from '../services/chartService';
 
+import Chart from './Components/Chart';
+import CoinInfo from './Components/CoinInfo';
 const { Content } = Layout;
+
 
 const Swap = () => {
   const location = useLocation();
   const walletAddress = location.state?.walletAddress;
   const [selectedCoin, setSelectedCoin] = useState(null);
-
+  const [selectedToCoin, setSelectedToCoin] = useState(null);
   const [mostValueCoins, setMostValueCoins] = useState(null);
 
+  const [chartData, setChartData] = useState(null);
+  const [coinDetails, setCoinDetails] = useState(null);
+
+  const fetchCoinDetails = async (tokenTicket) => {
+    const coinDetails = await getCoinDetails(tokenTicket);
+    setCoinDetails(coinDetails);
+    console.log(coinDetails);
+  }
+
+  const fetchhostoryData = async (tokenFullName) => {
+    const hdata = await getHistoricalData(tokenFullName, 'usd', 30);
+    setChartData(hdata);
+  }
+
+  const fetchmostValueCoins = async () => {
+    const popularCoins = await getTopVolumeCoins();
+    setMostValueCoins(popularCoins);
+  }
+
   useEffect(() => {
-    const fetchmostValueCoins = async () => {
-      const popularCoins = await getTopVolumeCoins();
-      setMostValueCoins(popularCoins);
-    }
     fetchmostValueCoins();
   }, []);
 
-  //имя монеты, количество
   const userCoins = {
     WIF: {
       name: 'WIF',
@@ -40,7 +58,6 @@ const Swap = () => {
   }
 
   if (!walletAddress) {
-    message.error('Адрес кошелька не найден');
     return (
       <Content
         style={{
@@ -63,141 +80,165 @@ const Swap = () => {
     <Content
       style={{
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: 'column',
         alignItems: 'flex-start',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         borderRadius: '25px',
-        width: '900px',
+        width: '1100px',
         marginRight: '20px',
         gap: '20px',
       }}
     >
-      <Content
-        style={{
-          backgroundColor: 'white',
-          borderRadius: '24px',
-          width: '400px',
-          padding: '20px',
-        }}>
-          <h3 style={{
-            fontSize: '18px',
-            fontWeight: '600',
-            marginBottom: '15px'
-          }}>Chart {selectedCoin || 'Selected Coin'}</h3>
-      </Content>
-
-      <Content
-        style={{
+      <div style={{
+        display: 'flex',
+        width: '100%',
+        gap: '20px'
+      }}>
+        <div style={{
           display: 'flex',
-          backgroundColor: 'white',
           flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          borderRadius: '24px',
-          width: '400px',
-          padding: '40px',
+          gap: '20px',
+          width: '650px'
         }}>
-          <div style={{ width: '100%', marginBottom: '30px' }}>
-            <h3 style={{ 
-              color: '#14F195',
-              fontSize: '18px',
-              fontWeight: '600',
-              marginBottom: '15px'
-            }}>From</h3>
+          <Chart chartData={chartData} selectedToCoin={selectedToCoin} />
+  
+          <CoinInfo coinDetails={coinDetails} />
+        </div>
 
-            <Select
-              style={{ 
-                width: '100%', 
-                height: '45px',
-                marginBottom: '15px',
-                borderRadius: '12px',
-              }}
-              placeholder="Choose coin"
-              dropdownStyle={{ borderRadius: '12px' }}
-              onChange={(value) => setSelectedCoin(value)}
-            >
-              {Object.entries(userCoins).map(([name, {image, amount}]) => (
-                <Select.Option key={name} value={name}>
-                  <div style={{display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'space-between'}}>
-                    <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
-                      <Image src={image} width={30} height={30} style={{borderRadius: '50%'}}/>
-                      <h3 style={{fontSize: '16px', fontWeight: '600'}}>${name}</h3>
+        <Content
+          style={{
+            display: 'flex',
+            backgroundColor: 'white',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: '24px',
+            width: '50%',
+            height: '100%',
+            padding: '40px',
+          }}>
+            <div style={{ width: '100%', marginBottom: '30px' }}>
+              <h3 style={{ 
+                color: '#14F195',
+                fontSize: '18px',
+                fontWeight: '600',
+                marginBottom: '15px'
+              }}>From</h3>
+
+              <Select
+                style={{ 
+                  width: '100%', 
+                  height: '45px',
+                  marginBottom: '15px',
+                  borderRadius: '12px',
+                }}
+                placeholder="Choose coin"
+                dropdownStyle={{ borderRadius: '12px' }}
+                onChange={(value) => setSelectedCoin(value)}
+              >
+                {Object.entries(userCoins).map(([name, {image, amount}]) => (
+                  <Select.Option key={name} value={name}>
+                    <div style={{display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'space-between'}}>
+                      <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
+                        <Image src={image} width={30} height={30} style={{borderRadius: '50%'}}/>
+                        <h3 style={{fontSize: '16px', fontWeight: '600'}}>${name}</h3>
+                      </div>
+                      <h3 style={{fontSize: '16px', fontWeight: '600', color: '#808080'}}>you own {amount}</h3>
                     </div>
-                    <h3 style={{fontSize: '16px', fontWeight: '600', color: '#808080'}}>{amount}</h3>
-                  </div>
+                  </Select.Option>
+                ))}
+              </Select>
+
+              <Input 
+                placeholder="Amount" 
+                style={{ 
+                  width: '100%',
+                  height: '45px',
+                  borderRadius: '12px',
+                  fontSize: '16px'
+                }} 
+              />
+            </div>
+
+            <div style={{ width: '100%', marginBottom: '30px' }}>
+              <h3 style={{ 
+                color: '#9945FF',
+                fontSize: '18px',
+                fontWeight: '600',
+                marginBottom: '15px'
+              }}>To</h3>
+
+              <Select
+                style={{ 
+                  width: '100%', 
+                  height: '45px',
+                  marginBottom: '15px',
+                  borderRadius: '12px'
+                }}
+                placeholder="Choose coin"
+                dropdownStyle={{ borderRadius: '12px' }}
+                onChange={(value, option) => {
+                  setSelectedToCoin(value);
+                  const selectedCoin = mostValueCoins.find(coin => coin.name === value);
+                  if (selectedCoin) {
+                    fetchCoinDetails(selectedCoin.id);
+                    fetchhostoryData(selectedCoin.id);
+                  }
+                  console.log(coinDetails);
+                }}
+              >
+                <Select.Option key="contract" value="contract">
+                  <h3 style={{fontSize: '16px', fontWeight: '600'}}>My Contract</h3>
                 </Select.Option>
-              ))}
-            </Select>
-
-            <Input 
-              placeholder="Amount" 
-              style={{ 
-                width: '100%',
-                height: '45px',
-                borderRadius: '12px',
-                fontSize: '16px'
-              }} 
-            />
-          </div>
-
-          <div style={{ width: '100%', marginBottom: '30px' }}>
-            <h3 style={{ 
-              color: '#9945FF',
-              fontSize: '18px',
-              fontWeight: '600',
-              marginBottom: '15px'
-            }}>To</h3>
-
-            <Select
-              style={{ 
-                width: '100%', 
-                height: '45px',
-                marginBottom: '15px',
-                borderRadius: '12px'
-              }}
-              placeholder="Choose coin"
-              dropdownStyle={{ borderRadius: '12px' }}
-            >
-                
-
-            {mostValueCoins && Object.entries(mostValueCoins).map(([coin, {image, symbol}]) => (
-                <Select.Option key={coin} value={coin}>
-                  <div style={{display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'space-between'}}>
-                    <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
-                      <Image src={image} width={30} height={30} style={{borderRadius: '50%'}}/>
-                      <h3 style={{fontSize: '16px', fontWeight: '600'}}>${symbol.toUpperCase()}</h3>
+                {mostValueCoins && Object.entries(mostValueCoins).map(([coin, {id,image, symbol,current_price, name}]) => (
+                  <Select.Option key={coin} value={name}>
+                    <div style={{display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'space-between'}}>
+                      <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
+                        <Image src={image} width={30} height={30} style={{borderRadius: '50%'}}/>
+                        <h3 style={{fontSize: '16px', fontWeight: '600'}}>${symbol.toUpperCase()}</h3>
+                      </div>
+                      <h3 style={{fontSize: '16px', fontWeight: '600', color: '#808080'}}>≈{Math.round(current_price * 1000) / 1000}$</h3>
                     </div>
-                  </div>
-                </Select.Option>
-              ))}
-            </Select>
-            <Input 
-              placeholder="Amount" 
-              style={{ 
-                width: '100%',
-                height: '45px',
-                borderRadius: '12px',
-                fontSize: '16px'
-              }} 
-              disabled 
-            />
-          </div>
+                   
+                  </Select.Option>
+                ))}
+              </Select>
+              <Input 
+                placeholder="Amount" 
+                style={{ 
+                  width: '100%',
+                  height: '45px',
+                  borderRadius: '12px',
+                  fontSize: '16px'
+                }} 
+                disabled 
+              />
+            </div>
 
-          <Button
-            type="primary"
-            style={{
-              width: '60%',
-              height: '50px',
-              borderRadius: '12px',
-              background: 'linear-gradient(90deg, #14F195, #9945FF)',
-              border: 'none',
-              fontSize: '16px',
-              fontWeight: '600'
-            }}
-          >
-            Swap
-          </Button>
-      </Content>
+            <Button
+              type="primary"
+              style={{
+                width: '60%',
+                height: '50px',
+                borderRadius: '12px',
+                background: 'linear-gradient(90deg, #14F195, #9945FF)',
+                border: 'none',
+                fontSize: '16px',
+                fontWeight: '600'
+              }}
+              onClick={() => {
+                //console.log('From:', selectedCoin);
+                //console.log('To:', selectedToCoin);
+                if (chartData) {
+                  console.log(GetPriceRange(chartData));
+                  console.log(GetMeanPriceIn90Days(chartData));
+                }
+              }}
+            >
+              Swap
+            </Button>
+        </Content>
+      </div>
     </Content>
   );
 };

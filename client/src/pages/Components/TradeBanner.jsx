@@ -13,8 +13,8 @@ const TradeBanner = () => {
             alignItems: 'flex-start',
             justifyContent: 'flex-start',
             borderRadius: '25px',
-            width: '1050px',
-            marginRight: '20px',
+            width: '100%',
+            marginBottom: '20px',
             padding: '0', 
             overflow: 'hidden', 
           }}
@@ -22,25 +22,36 @@ const TradeBanner = () => {
           <div
             style={{
               width: '100%', 
-              height: '125px', 
+              height: '150px', 
               borderRadius: '25px', 
-              overflow: 'hidden', 
-              border: 'none',
+              overflow: 'hidden',
+              position: 'relative',
+              background: 'linear-gradient(90deg, #14F195, #9945FF)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '20px'
             }}
           >
-            <Image
-              src="https://public.bnbstatic.com/static/content/square/images/f39c1a9b9eab425b94a311e858fc28a1.jpg"
-              alt="Trade Banner"
-              style={{
-                width: '100%', 
-                height: '100%', 
-                objectFit: 'cover',
-                objectPosition: 'center', 
-                display: 'block', 
-                border: 'none', 
-              }}
-              preview={false} 
-            />
+            <div style={{
+              color: 'white',
+              textAlign: 'center',
+              zIndex: 1
+            }}>
+              <h2 style={{ 
+                fontSize: '28px', 
+                fontWeight: 'bold',
+                marginBottom: '10px'
+              }}>
+                Swap Tokens Instantly
+              </h2>
+              <p style={{
+                fontSize: '16px',
+                opacity: 0.9
+              }}>
+                Trade tokens on Solana with the best rates and lowest fees
+              </p>
+            </div>
           </div>
         </Content>
     );

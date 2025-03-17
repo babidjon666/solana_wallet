@@ -20,7 +20,7 @@ const Portfolio = () => {
           alignItems: 'center',
           justifyContent: 'center',
           borderRadius: '25px',
-          width: '800px',
+          width: '100%',
           marginRight: '20px',
         }}
       >
