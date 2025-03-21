@@ -36,7 +36,7 @@ const Chart = ({chartData, selectedToCoin}) => {
       labels,
       datasets: [
         {
-          label: 'Coin Price',
+          label: 'Coin Price 30 days',
           data: data,
           borderColor: '#14F195',
           backgroundColor: 'rgba(20, 241, 149, 0.2)',

@@ -2,7 +2,6 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { Layout, Image, message, Divider } from 'antd';
 import CopyButton from './Custom/copuButtons';
-
 const { Content } = Layout;
 
 const Portfolio = () => {
@@ -38,7 +37,7 @@ const Portfolio = () => {
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
         borderRadius: '25px',
-        width: '1050px',
+        width: '100%',
         marginRight: '20px',
         padding: '20px',
       }}
@@ -62,7 +61,7 @@ const Portfolio = () => {
       <Divider style={{ margin: '20px 0', borderColor: '#DCDCDC' }} />
       <div>
       <h4 style={{ fontSize: '30px', margin: '0', fontFamily: 'Roboto, sans-serif' }}>
-        $200
+        200$
       </h4>
       </div>
     </Content>

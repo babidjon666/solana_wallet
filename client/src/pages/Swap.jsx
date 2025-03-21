@@ -2,12 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Layout, Image, Select, Input, Button } from 'antd';
 import { getTopVolumeCoins, getCoinDetails, getHistoricalData } from '../services/coinGeckoApi';
-import { GetPriceRange, GetMeanPriceIn90Days } from '../services/chartService';
 
 import Chart from './Components/Chart';
 import CoinInfo from './Components/CoinInfo';
 const { Content } = Layout;
-
 
 const Swap = () => {
   const location = useLocation();
@@ -19,10 +17,12 @@ const Swap = () => {
   const [chartData, setChartData] = useState(null);
   const [coinDetails, setCoinDetails] = useState(null);
 
+  const [contractFrom, setContractFrom] = useState(null);
+  const [contractTo, setContractTo] = useState(null);
+
   const fetchCoinDetails = async (tokenTicket) => {
     const coinDetails = await getCoinDetails(tokenTicket);
     setCoinDetails(coinDetails);
-    console.log(coinDetails);
   }
 
   const fetchhostoryData = async (tokenFullName) => {
@@ -227,12 +227,7 @@ const Swap = () => {
                 fontWeight: '600'
               }}
               onClick={() => {
-                //console.log('From:', selectedCoin);
-                //console.log('To:', selectedToCoin);
-                if (chartData) {
-                  console.log(GetPriceRange(chartData));
-                  console.log(GetMeanPriceIn90Days(chartData));
-                }
+                // запос для свапа, но сначала нужно контракт вытащить
               }}
             >
               Swap

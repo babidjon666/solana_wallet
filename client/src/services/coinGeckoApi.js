@@ -23,7 +23,7 @@ export const getTopVolumeCoins = async () => {
 export const getCoinDetails = async (symbol) => {
   try {
     const response = await axios.get(`https://api.coingecko.com/api/v3/coins/${symbol}`);
-    //return response.data.platforms.solana;
+    //return response.data.platforms.solana; для получения адреса контракта
     return response.data
   } catch (error) {
     message.error('Ошибка при получении данных:', error);

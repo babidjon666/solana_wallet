@@ -13,7 +13,7 @@ const TradeBanner = () => {
             alignItems: 'flex-start',
             justifyContent: 'flex-start',
             borderRadius: '25px',
-            width: '100%',
+            width: '1050px',
             marginBottom: '20px',
             padding: '0', 
             overflow: 'hidden', 

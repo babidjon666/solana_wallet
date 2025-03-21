@@ -20,25 +20,25 @@ const BalanceCard = () => {
         }
 
         fetchBalance();
-        const intervalId = setInterval(fetchBalance, 5000); // обновление баланса каждые 5 секунд
+        const intervalId = setInterval(fetchBalance, 5000); 
 
         return () => clearInterval(intervalId);
     }, [walletAddress]);
 
     const fetchBalance = async () => {
         try {
-            setLoading(true); // Начинаем загрузку
+            setLoading(true); 
             const SOL_BALANCE = await solanaService.get_balance(walletAddress);
             console.log('SOL Balance:', SOL_BALANCE);
-            // Обновляем баланс, если он изменился
+
             if (balance !== SOL_BALANCE) {
                 setBalance(SOL_BALANCE);
-                setError(null); // если нет ошибки, сбрасываем ошибку
+                setError(null); 
             }
         } catch (err) {
             setError(err.message || 'Failed to fetch balance');
         } finally {
-            setLoading(false); // Завершаем загрузку
+            setLoading(false); 
         }
     };
 
@@ -74,7 +74,7 @@ const BalanceCard = () => {
             }}
         >
             {error && (
-                <Alert message={error} type="error" showIcon /> // Отображаем ошибку, если она есть
+                <Alert message={error} type="error" showIcon /> 
             )}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
                 <Text strong style={{ fontSize: '24px', fontFamily: 'Roboto, sans-serif', color: 'white' }}>Wallet</Text>

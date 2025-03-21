@@ -15,7 +15,7 @@ const LeftMenu = ({ selectedButton, setSelectedButton }) => {
         flexDirection: 'column',
         alignItems: 'center',
         borderRadius: '25px',
-        width: '0px',
+        width: '20%',
         marginRight: '20px',
         padding: '20px',
         height: '750px',
